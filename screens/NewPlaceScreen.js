@@ -22,7 +22,7 @@ const NewPlaceScreen = props => {
   };
 
   const savePlaceHandler = () => {
-    dispatch(placesActions(titleValue));
+    dispatch(placesActions.addPlace(titleValue));
     props.navigation.goBack();
   };
 
