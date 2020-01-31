@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButtons";
-import HeaderButton from "../components/HeaderButtons";
 
 const PlacesListScreen = props => {
   return (
