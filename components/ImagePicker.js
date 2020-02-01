@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import * as Permissions from "expo-permissions";
 import Colors from "../constants/Colors";
 
 const ImgPicker = props => {
+  const [pickedImage, setPickedImage] = useState(null);
+
   const verifyPermission = async () => {
     const result = await Permissions.askAsync(
       Permissions.CAMERA,
@@ -36,14 +38,26 @@ const ImgPicker = props => {
     if (!hasPermissions) {
       return;
     }
-    ImagePicker.launchCameraAsync();
+    const image = await ImagePicker.launchCameraAsync({
+      //camera config
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 0.5
+    });
+    console.log(image);
+    setPickedImage(image.uri);
+    props.onImageTaken(image.uri);
   };
 
   return (
     <View style={styles.imagePicker}>
       <View style={styles.imagePreview}>
-        <Text>No image picked yet.</Text>
-        <Image style={styles.image} />
+        {!pickedImage ? (
+          <Text>No image picked yet.</Text>
+        ) : (
+          <Image style={styles.image} source={{ uri: pickedImage }} />
+        )}
+
         <Button
           title="Take Image"
           color={Colors.primary}
@@ -56,7 +70,8 @@ const ImgPicker = props => {
 
 const styles = StyleSheet.create({
   imagePicker: {
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 15
   },
   imagePreview: {
     width: "100%",
