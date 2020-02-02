@@ -19,3 +19,22 @@ export const init = () => {
   });
   return promise;
 };
+
+export const insertPlace = (title, imageUrl, address, lat, lng) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        "INSERT INTO places (title, imageUrl, address, lat, lng) VALUES (?, ?, ?, ?, ?); ",
+        [title, imageUrl, address, lat, lng],
+        (_, result) => {
+          resolve(result);
+          console.log("result", result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
