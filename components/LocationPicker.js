@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Button,
@@ -15,6 +15,20 @@ import MapPreview from "../components/MapPreview";
 const LocationPicker = props => {
   const [location, setLocation] = useState();
   const [isFetching, setIsFetching] = useState(false);
+
+  const pickedLocation = props.navigation.getParam("pickedLocation");
+
+  //pull out
+  const { onLocationChanged } = props;
+
+  useEffect(() => {
+    if (pickedLocation) {
+      setLocation(pickedLocation);
+      //because of useEffect onLocationChanged should be specified as a dependency that is why it must be pulled out among props
+      //props.onLocationChanged(pickedLocation);
+      onLocationChanged(pickedLocation);
+    }
+  }, [pickedLocation, onLocationChanged]);
 
   const verifyPermission = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -43,6 +57,10 @@ const LocationPicker = props => {
       });
       console.log("location", location);
       setLocation({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude
+      });
+      props.onLocationChanged({
         lat: location.coords.latitude,
         lng: location.coords.longitude
       });
