@@ -84,12 +84,13 @@ const LocationPicker = props => {
         style={styles.mapPreview}
         location={location}
         onPress={pickonMapHandler}
-      />
-      {isFetching ? (
-        <ActivityIndicator size="large" color={Colors.primary} />
-      ) : (
-        <Text>No location chosen here!</Text>
-      )}
+      >
+        {isFetching ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : (
+          <Text>No location chosen here!</Text>
+        )}
+      </MapPreview>
       <View style={styles.action}>
         <Button
           title="Get User Location"
